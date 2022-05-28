@@ -228,3 +228,35 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
   ```
 
 根据以上思考完善游戏
+
+- [snake game](Snake/README.md)
+
+- 注意碰撞
+
+  AI 需要调用 isCollision 判断下一步的状态是否会碰撞, 同时游戏需要判断此刻是否会碰撞.
+
+  在游戏当中, 碰撞会发送消息, AI 调用判断不发送消息, 所以应该分开实现
+
+- 控制帧率代码的位置
+
+  msg_loop_end 可能有逻辑处理, 需要花时间, 所以应该把帧率控制放在这后面
+
+### 搭建 AI
+
+- 基本逻辑-新的形式
+
+  ```python
+  def AI_hook(self, msg, params):
+      # Ai 主题逻辑
+      if msg == 'msg_loop_start':
+          self.state = self.get_state(params)
+      elif msg == 'msg_game_action':
+          self.action = self.get_action(self.state)
+          params['action'] = self.interpret_action(self.action, params)
+      elif msg == 'msg_loop_end':
+          self.feedback = self.get_feedback(self.action)
+          self.data_set.record(self.state, self.action, self.feedback)
+          self.train_short(self.data_set)
+  ```
+
+  上面的层次, 数据格式都是以 AI 数据格式交流, 和游戏交互, 需要转化

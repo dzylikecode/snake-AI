@@ -7,10 +7,10 @@ import random
 ###############################################################################
 # type
 class Direction(Enum):
-    RIGHT = 1
+    RIGHT = 0
+    UP = 1
     LEFT = 2
-    UP = 3
-    DOWN = 4
+    DOWN = 3
 
 
 # rgb colors
@@ -25,7 +25,6 @@ Point = namedtuple('Point', 'x, y')
 ###############################################################################
 # data
 snake_state = {
-    'direction': None,
     'head': None,
     'snake': [],
     'score': 0,
@@ -42,6 +41,9 @@ snake_state = {
     'msg_game_execute': None,
     'msg_game_ui_before': None,
     'msg_game_ui_after': None,
+    'msg_snake_hit_boundary': None,
+    'msg_snake_hit_self': None,
+    'msg_snake_eat_food': None,
 }
 
 ###############################################################################
@@ -101,6 +103,7 @@ class SnakeGame:
             self._draw_ui()
             self.hook('msg_game_ui_after', self.state)
             self.hook('msg_loop_end', self.state)
+            self.clock.tick(SPEED)  # 控制帧率
 
     def end(self):
         pass
@@ -129,11 +132,12 @@ class SnakeGame:
         self._move(action)
         self.state['snake'].insert(0, self.state['head'])
         if self.state['head'] == self.state['food']:
+            self.hook('msg_snake_eat_food', self.state)
             self.state['score'] += 1
             self._place_food()
         else:
             self.state['snake'].pop()
-        if self.isCollision(self.state['head']):
+        if self._is_collision():
             self.state['game_over'] = True
 
     def _move(self, action):
@@ -156,7 +160,20 @@ class SnakeGame:
         if self.state['food'] in self.state['snake']:
             self._place_food()  # 递归到不重合为止
 
-    def isCollision(self, pt):
+    def _is_collision(self):
+        # hits boundary
+        pt = self.state['head']
+        if (pt.x > self.w - BLOCK_SIZE or pt.x < 0
+                or pt.y > self.h - BLOCK_SIZE or pt.y < 0):
+            self.hook('msg_snake_hit_boundary', self.state)
+            return True
+        # hits itself
+        if pt in self.state['snake'][1:]:
+            self.hook('msg_snake_hit_self', self.state)
+            return True
+        return False
+
+    def is_collision(self, pt):
         # hits boundary
         if (pt.x > self.w - BLOCK_SIZE or pt.x < 0
                 or pt.y > self.h - BLOCK_SIZE or pt.y < 0):
@@ -186,8 +203,6 @@ class SnakeGame:
                                 WHITE)
         self.display.blit(text, [0, 0])
         pygame.display.flip()
-
-        self.clock.tick(SPEED)  # 控制帧率
 
 
 if __name__ == '__main__':
