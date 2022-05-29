@@ -1,11 +1,9 @@
-import sys
-
-sys.path.append(r"F:\Git_WorkSpace\temp\snake-AI\code\snake")
-
-from snake_game import SnakeGame, Direction, Point, BLOCK_SIZE
+from sympy import total_degree
+from snake.snake_game import SnakeGame, Direction, Point, BLOCK_SIZE
 import pygame
 import random
 from model import DateSet, DQL
+from visualize_data import plot
 
 ###############################################################################
 # settings
@@ -34,6 +32,13 @@ class SnakeAgent:
         self.model = DQL(11, 256, 3)
         self.data_set = DateSet()
         self.trains_num = 0
+        # 可视化数据
+        self.width = 640
+        self.height = 480
+        self.right_paddle = 150
+        self.total_score = 0
+        self.score_list = []
+        self.mean_score_list = []
 
     def get_state(self, game_data):
         head = game_data['head']
@@ -98,7 +103,6 @@ class SnakeAgent:
     def get_feedback(self, game_data):
         return {
             'reward': self.reward,
-            'score': game_data['score'],
             'state': self.get_state(game_data),
             'game_over': game_data['game_over'],
         }
@@ -119,7 +123,8 @@ class SnakeAgent:
         self.model.train_short(state, action, reward, next_state, game_over)
 
     def play(self):
-        self.game = SnakeGame(self.AI_hook)
+        self.game = SnakeGame(self.AI_hook, self.width, self.height,
+                              self.right_paddle)
         while True:
             self.game.reset()
             self.game.start()
@@ -164,6 +169,64 @@ class SnakeAgent:
             if self.loop_num > 100 * len(params['snake']):
                 self.AI_hook('msg_train_too_long', params)  # 发送消息
                 params['game_over'] = True
+        # 可视化数据
+        if msg == 'msg_game_ui_before':
+            # action
+            font_color = (0, 255, 0)
+            if self.action[0]:
+                str_action = self.game.font.render('straight', True,
+                                                   font_color)
+                self.game.display.blit(str_action, (self.width + 2, 0))
+            elif self.action[1]:
+                str_action = self.game.font.render('turn right', True,
+                                                   font_color)
+                self.game.display.blit(str_action, (self.width + 2, 0))
+            elif self.action[2]:
+                str_action = self.game.font.render('turn left', True,
+                                                   font_color)
+                self.game.display.blit(str_action, (self.width + 2, 0))
+            # direction
+            str_dir_list = ['right', 'up', 'left', 'down']
+            str_dir_idx = get_direction_index(params['action'])
+            str_dir = self.game.font.render(str_dir_list[str_dir_idx], True,
+                                            font_color)
+            self.game.display.blit(str_dir, (self.width + 2, 20))
+            # danger
+            if self.state[0]:
+                str_danger = self.game.font.render('danger straight', True,
+                                                   font_color)
+                self.game.display.blit(str_danger, (self.width + 2, 40))
+            if self.state[1]:
+                str_danger = self.game.font.render('danger right', True,
+                                                   font_color)
+                self.game.display.blit(str_danger, (self.width + 2, 60))
+            if self.state[2]:
+                str_danger = self.game.font.render('danger left', True,
+                                                   font_color)
+                self.game.display.blit(str_danger, (self.width + 2, 80))
+            # food pos
+            if self.state[-4]:
+                str_food = self.game.font.render('food right', True,
+                                                 font_color)
+                self.game.display.blit(str_food, (self.width + 2, 100))
+            if self.state[-3]:
+                str_food = self.game.font.render('food up', True, font_color)
+                self.game.display.blit(str_food, (self.width + 2, 120))
+            if self.state[-2]:
+                str_food = self.game.font.render('food left', True, font_color)
+                self.game.display.blit(str_food, (self.width + 2, 140))
+            if self.state[-1]:
+                str_food = self.game.font.render('food down', True, font_color)
+                self.game.display.blit(str_food, (self.width + 2, 160))
+            # reward
+            str_reward = self.game.font.render('reward:' + str(self.reward),
+                                               True, font_color)
+            self.game.display.blit(str_reward, (self.width + 2, 180))
+        elif msg == 'msg_game_over':
+            self.total_score += params['score']
+            self.score_list.append(params['score'])
+            self.mean_score_list.append(self.total_score / self.trains_num)
+            plot(self.score_list, self.mean_score_list)
 
 
 if __name__ == '__main__':

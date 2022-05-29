@@ -57,21 +57,21 @@ def Hook(message, params):
 
 
 class SnakeGame:
-    def __init__(self, hook=Hook):
+    def __init__(self, hook=Hook, w=640, h=480, right_paddle=0):
         self.hook = hook
         self.state = snake_state
-        self._init_game_platform()
+        self._init_game_platform(w, h, right_paddle)
         self.reset()
 
-    def _init_game_platform(self):
-        self.w = 640
-        self.h = 480
+    def _init_game_platform(self, w, h, right_paddle):
+        self.w = w
+        self.h = h
         # init display
         pygame.init()
-        self.display = pygame.display.set_mode((self.w, self.h))
+        self.display = pygame.display.set_mode((self.w + right_paddle, self.h))
         pygame.display.set_caption('Snake')
         self.clock = pygame.time.Clock()
-        self.font = pygame.font.Font(r'code\snake\RES\arial.ttf', 25)
+        self.font = pygame.font.Font(r'code\AI\snake\RES\arial.ttf', 25)
 
     def reset(self):
         self.state['game_over'] = False
@@ -99,9 +99,7 @@ class SnakeGame:
             self.hook('msg_game_action', self.state)
             self._exe_action(self.state['action'])
             self.hook('msg_game_execute', self.state)
-            self.hook('msg_game_ui_before', self.state)
             self._draw_ui()
-            self.hook('msg_game_ui_after', self.state)
             self.hook('msg_loop_end', self.state)
             self.clock.tick(SPEED)  # 控制帧率
 
@@ -185,7 +183,7 @@ class SnakeGame:
 
     def _draw_ui(self):
         self.display.fill(BLACK)
-
+        self.hook('msg_game_ui_before', self.state)
         for pt in self.state['snake']:
             pygame.draw.rect(self.display, BLUE1,
                              pygame.Rect(pt.x, pt.y, BLOCK_SIZE, BLOCK_SIZE))
@@ -202,6 +200,7 @@ class SnakeGame:
         text = self.font.render("Score: " + str(self.state['score']), True,
                                 WHITE)
         self.display.blit(text, [0, 0])
+        self.hook('msg_game_ui_after', self.state)
         pygame.display.flip()
 
 

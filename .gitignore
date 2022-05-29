@@ -21,3 +21,4 @@ Thumbs.db*
 # vs code
 .vscode/
 temp/
+__pycache__/

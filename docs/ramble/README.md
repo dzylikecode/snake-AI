@@ -21,3 +21,15 @@
 还有 model 部分并没有理解, 只是照搬
 
 - [ ] 整理文档
+
+https://blog.csdn.net/Wwwwwww527/article/details/110202216
+
+https://blog.csdn.net/qq_42079689/article/details/102873766
+
+http://digtime.cn/articles/159/pytorch-zhong-nn-linear-han-shu-jie-du
+
+https://zhuanlan.zhihu.com/p/349407590
+
+https://zhuanlan.zhihu.com/p/64893308
+
+https://blog.csdn.net/Strive_For_Future/article/details/106716745
