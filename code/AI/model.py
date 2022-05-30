@@ -96,3 +96,9 @@ class DQL:
         action = torch.tensor(action, dtype=torch.long)
         reward = torch.tensor(reward, dtype=torch.float)
         self.train(state, action, reward, next_state, game_over)
+
+    def save(self, file_name='model.pth'):
+        self.model.save(file_name)
+
+    def load(self, file_name='./model.pth'):
+        self.model.load_state_dict(torch.load(file_name))

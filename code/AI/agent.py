@@ -39,6 +39,7 @@ class SnakeAgent:
         self.total_score = 0
         self.score_list = []
         self.mean_score_list = []
+        self.max_score = 0
 
     def get_state(self, game_data):
         head = game_data['head']
@@ -227,6 +228,11 @@ class SnakeAgent:
             self.score_list.append(params['score'])
             self.mean_score_list.append(self.total_score / self.trains_num)
             plot(self.score_list, self.mean_score_list)
+            # 储存模型
+            if self.max_score < params['score']:
+                self.max_score = params['score']
+                self.model.save()
+            print('Game', self.trains_num, 'Score', self.max_score)
 
 
 if __name__ == '__main__':
