@@ -1,6 +1,6 @@
 # docsify-template
 
-index.html
+index.html:
 
 - [ ] modify the title
 - [ ] modify the description
