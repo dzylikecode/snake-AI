@@ -52,181 +52,22 @@
     <script src="https://cdn.jsdelivr.net/npm/markmap-view"></script>
     <script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.14.3/dist/browser/index.min.js"></script>
     <!-- End -->
-    <style type="text/css">
-      iframe {
-        display: block;
-        border: none;
-        height: 75vh;
-        width: 100%;
-      }
-    </style>
+    <link rel="stylesheet" href="./assets/css/style.css" />
   </head>
   <body>
     <div id="app"></div>
     <script>
-      let num = 0;
-      mermaid.initialize({ startOnLoad: false });
-      markmapSvg = [];
-      const transformer = new markmap.Transformer();
-      window.$docsify = {
-        name: "Tree", // 目录的标题
-        repo: "", // 右上角的挂件
-        loadNavbar: "NAVIGATION.md",
-        loadSidebar: "SUMMARY.md",
-        alias: {
-          "/.*/NAVIGATION.md": "/NAVIGATION.md",
-        },
-        subMaxLevel: 3, // 子目录最大层级, 有助于显示 markdown 的层级
-        auto2top: true, // 自动跳转至顶部
-        markdown: {
-          renderer: {
-            code: function (code, lang) {
-              if (lang === "mermaid") {
-                return (
-                  '<div class="mermaid" style="background:#E1EFD9" >' +
-                  mermaid.render("mermaid-svg-" + num++, code) +
-                  "</div>"
-                );
-              } else if (lang == "markmap") {
-                const { root: data } = transformer.transform(code);
-                let currentNum = num;
-                markmapSvg.push(function () {
-                  let elem = document.getElementById(
-                    "markmap-svg-" + currentNum
-                  );
-                  const mm = new markmap.Markmap(elem, null);
-                  if (data) {
-                    mm.setData(data);
-                    const { minX, maxX, minY, maxY } = mm.state;
-                    const naturalWidth = maxY - minY;
-                    const naturalHeight = maxX - minX;
-                    elem.style.width = naturalWidth + "px";
-                    elem.style.height = naturalHeight + "px";
-                    mm.fit(); // always fit for the first render
-                  }
-                });
-                return `<svg class="markmap" id="markmap-svg-${num++}"></svg>`;
-              }
-              return this.origin.code.apply(this, arguments);
-            },
-          },
-        },
-        plugins: [
-          function (hook, vm) {
-            hook.beforeEach(function (html) {
-              num = 0;
-              markmapSvg = [];
-              let url =
-                "https://github.com/dzylikecode/SCUT-Digital-Image-Processing-and-Application/blob/master/" +
-                vm.route.file;
-              let editHtml = "[:memo: EDIT DOCUMENT](" + url + ")\n";
-              return (
-                editHtml +
-                html.replace(
-                  /<a\s+(?:[^>]*?\s+)?href\s*=\s*(["'])#(.*?)\1.*?>/g,
-                  (m, g1, g2) => m.replace(g2, vm.route.path + "#" + g2)
-                )
-              );
-            });
-            hook.doneEach(function () {
-              markmapSvg.forEach((fn) => fn());
-            });
-          },
-        ],
-      };
+      window.gUserName = "dzylikecode";
+      window.gRepoName = "SCUT-Digital-Image-Processing-and-Application";
     </script>
-    <!-- docsify-katex for latex -->
-    <script>
-      // import katex from "katex";
-      // import marked from "marked";
-      (function () {
-        let originMarkdown = window.$docsify.markdown;
-        let newMarked = marked; // version above 2.1.0
-        window.$docsify.markdown = newMarkdown;
-        return;
-        function newMarkdown(originMarked, originRenderer) {
-          // in docsify.js: `window.marked = marked;`
-          // this will overwrite the marked
-          // here `let newMarked = marked;` will not right
-          const mathExtension = {
-            name: "math",
-            level: "inline",
-            start(src) {
-              let index = src.match(/\$/)?.index;
-              return index;
-            },
-            tokenizer(src, tokens) {
-              const blockRule = /^\$\$((\\.|[^\$\\])+)\$\$/;
-              const inlineRule = /^\$((\\.|[^\$\\])+)\$/;
-              let match;
-              if ((match = blockRule.exec(src))) {
-                return {
-                  type: "math",
-                  raw: match[0],
-                  text: match[1].trim(),
-                  mathLevel: "block",
-                };
-              } else if ((match = inlineRule.exec(src))) {
-                return {
-                  type: "math",
-                  raw: match[0],
-                  text: match[1].trim(),
-                  mathLevel: "inline",
-                };
-              }
-            },
-            renderer(token) {
-              if (token.mathLevel === "block") {
-                return katex.renderToString(token.text, {
-                  throwOnError: false,
-                  displayMode: true,
-                });
-              } else if (token.mathLevel === "inline") {
-                return katex.renderToString(token.text, {
-                  throwOnError: false,
-                  displayMode: false,
-                });
-              }
-            },
-          };
-          const merge =
-            Object.assign ||
-            function (to) {
-              for (let i = 1; i < arguments.length; i++) {
-                const from = Object(arguments[i]);
-                for (const key in from) {
-                  if (hasOwn.call(from, key)) {
-                    to[key] = from[key];
-                  }
-                }
-              }
-              return to;
-            };
-
-          let opts = originMarkdown || {};
-
-          if (isFn(opts)) {
-            opts = opts.apply(
-              this, // make it right: return this.origin.code(src);
-              originMarked,
-              originRenderer
-            ).defaults;
-          } else {
-            opts = merge(opts, {
-              renderer: merge(originRenderer, opts.renderer),
-            });
-          }
-          newMarked.setOptions(opts);
-          newMarked.use({ extensions: [mathExtension] });
-
-          return newMarked.parse;
-
-          function isFn(obj) {
-            return typeof obj === "function";
-          }
-        }
-      })();
-    </script>
+    <script src="./assets/js/config.js"></script>
+    <script src="./assets/js/docsify.js"></script>
+    <script src="./assets/js/anchor.js"></script>
+    <script src="./assets/js/katex.js"></script>
+    <script src="./assets/js/editOnGitHub.js"></script>
+    <script src="./assets/js/link.js"></script>
+    <script src="./assets/js/mermaid.js"></script>
+    <script src="./assets/js/markmap.js"></script>
     <!-- Docsify v4 -->
     <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
     <!-- copy to clipboard -->
