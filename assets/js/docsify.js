@@ -11,10 +11,10 @@ window.$docsify = {
   markdown: {
     renderer: {
       code: function (code, lang) {
-        const trans = docsifyRender.code?.[lang](code);
+        const trans = docsifyRender.code?.[lang];
         return trans === undefined
           ? this.origin.code.apply(this, arguments)
-          : trans;
+          : trans(code);
       },
     },
   },
