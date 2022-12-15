@@ -1,4 +1,3 @@
-from sympy import total_degree
 from snake.snake_game import SnakeGame, Direction, Point, BLOCK_SIZE
 import pygame
 import random

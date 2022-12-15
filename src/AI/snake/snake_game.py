@@ -71,7 +71,7 @@ class SnakeGame:
         self.display = pygame.display.set_mode((self.w + right_paddle, self.h))
         pygame.display.set_caption('Snake')
         self.clock = pygame.time.Clock()
-        self.font = pygame.font.Font(r'code\AI\snake\RES\arial.ttf', 25)
+        self.font = pygame.font.Font(r'src/AI/snake/RES/arial.ttf', 25)
 
     def reset(self):
         self.state['game_over'] = False
