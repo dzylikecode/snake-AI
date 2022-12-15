@@ -18,7 +18,7 @@
 
   学习的主要知识
 
-## usage
+## command usage
 
 - 激活常用命令
 
@@ -78,18 +78,42 @@ install pytorch
 dz_in pytorch torchvision torchaudio pytorch-cuda=11.6 -c pytorch -c nvidia
 ```
 
-!> pygame
+## install
 
-- [how to install pygame](https://www.pygame.org/wiki/GettingStarted)
+1. prepare for virtual environment
 
-  - linux ubuntu
+   ```bash
+   dz_mk
+   ```
 
-    ```bash
-    sudo apt-get install python3-pygame
-    ```
+2. install pygame
 
-    recommend:
+   !> pygame
 
-    ```bash
-    python3 -m pip install -U pygame --user
-    ```
+   - [how to install pygame](https://www.pygame.org/wiki/GettingStarted)
+
+   - linux ubuntu
+
+     ```bash
+     sudo apt-get install python3-pygame
+     ```
+
+     recommend:
+
+     ```bash
+     python3 -m pip install -U pygame --user
+     ```
+
+3. play
+
+   - play snake
+
+     ```bash
+     dz_snake
+     ```
+
+   - play snake with AI
+
+     ```bash
+     dz_ai
+     ```

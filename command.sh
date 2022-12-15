@@ -84,3 +84,8 @@ function pip_package(){
     dz_ex
 }
 alias dz_pp="pip_package"
+
+# play game
+alias dz_snake="dz_cd; python3 src/AI/snake/snake_game.py"
+# AI
+alias dz_ai="dz_cd; python3 src/AI/agent.py"
