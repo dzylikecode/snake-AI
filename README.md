@@ -69,3 +69,27 @@
   ```bash
   dz_ex
   ```
+
+### example
+
+install pytorch
+
+```bash
+dz_in pytorch torchvision torchaudio pytorch-cuda=11.6 -c pytorch -c nvidia
+```
+
+!> pygame
+
+- [how to install pygame](https://www.pygame.org/wiki/GettingStarted)
+
+  - linux ubuntu
+
+    ```bash
+    sudo apt-get install python3-pygame
+    ```
+
+    recommend:
+
+    ```bash
+    python3 -m pip install -U pygame --user
+    ```

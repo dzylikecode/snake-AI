@@ -76,3 +76,11 @@ function conda_update_package() {
     dz_ex
 }
 alias dz_up="conda_update_package"
+# pip
+function pip_package(){
+    echo "pip package: $1"
+    dz_cd
+    pip $1
+    dz_ex
+}
+alias dz_pp="pip_package"
