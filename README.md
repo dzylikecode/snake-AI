@@ -88,7 +88,9 @@ dz_in pytorch torchvision torchaudio pytorch-cuda=11.6 -c pytorch -c nvidia
 
 2. install pygame
 
-   !> pygame
+   ```bash
+   dz_cd
+   ```
 
    - [how to install pygame](https://www.pygame.org/wiki/GettingStarted)
 
@@ -117,3 +119,15 @@ dz_in pytorch torchvision torchaudio pytorch-cuda=11.6 -c pytorch -c nvidia
      ```bash
      dz_ai
      ```
+
+## issue
+
+- [Could not load the Qt platform plugin "xcb" in "" even though it was found](https://askubuntu.com/questions/1271976/could-not-load-the-qt-platform-plugin-xcb-in-even-though-it-was-found)
+- [Could not find or load the Qt platform plugin "xcb"](https://stackoverflow.com/questions/33051790/could-not-find-or-load-the-qt-platform-plugin-xcb)
+
+  solved:
+
+  ```py
+  import matplotlib
+  matplotlib.use('TkAgg')
+  ```

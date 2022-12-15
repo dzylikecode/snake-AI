@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
+import matplotlib
 from IPython import display
 
+matplotlib.use('TkAgg')
 plt.ion()
 
 

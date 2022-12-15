@@ -108,7 +108,7 @@ class SnakeGame:
 
     def __del__(self):
         pygame.quit()
-        quit()
+        # quit()
 
     def _translate_event(self, events):
         direct = self.state['action']
