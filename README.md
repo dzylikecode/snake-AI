@@ -1,13 +1,5 @@
-# docsify-template
+# snake-AI
 
-index.html:
-
-- [ ] modify the title
-- [ ] modify the description
-- [ ] modify the keyword
-- [ ] modify the repo link
-- [ ] modify the variable `url` in the script tag
-
-## 可读性
-
-不必打包, 压缩, 方便自己阅读和修改
+- repository:[snake AI](https://github.com/python-engineer/snake-ai-pytorch)
+- video: [Teach AI To Play Snake - Reinforcement Learning Tutorial With PyTorch And Pygame](https://www.youtube.com/watch?v=PJl4iabBEz0&list=PLqnslRFeH2UrDh7vUmJ60YrmWd64mTTKV)
+- series: [Teach AI To Play Snake - Reinforcement Learning Tutorial With PyTorch And Pygame (Part 1)](https://www.youtube.com/watch?v=PJl4iabBEz0&list=RDCMUCbXgNpp0jedKWcQiULLbDTA&start_radio=1)

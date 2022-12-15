@@ -1,2 +1,4 @@
 .vscode/
 temp
+__pycache__/
+*.pth
