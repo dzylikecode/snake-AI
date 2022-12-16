@@ -145,7 +145,7 @@ class SnakeAgent:
         if msg == 'msg_game_input':
             for event in params['input']:
                 if event.type == pygame.QUIT:
-                    quit()
+                    exit()
         # 采集数据
         # # 设置奖励
         # # 训练次数

@@ -94,17 +94,23 @@ dz_in pytorch torchvision torchaudio pytorch-cuda=11.6 -c pytorch -c nvidia
 
    - [how to install pygame](https://www.pygame.org/wiki/GettingStarted)
 
-   - linux ubuntu
+     - linux ubuntu
 
-     ```bash
-     sudo apt-get install python3-pygame
-     ```
+       ```bash
+       sudo apt-get install python3-pygame
+       ```
 
-     recommend:
+       recommend:
 
-     ```bash
-     python3 -m pip install -U pygame --user
-     ```
+       ```bash
+       python3 -m pip install -U pygame --user
+       ```
+
+     - uninstall
+
+       ```bash
+       dz_cd && pip uninstall pygame
+       ```
 
 3. play
 
